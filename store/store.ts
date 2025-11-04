@@ -1,25 +1,17 @@
-import { createStore } from "zustand/vanilla";
+import { create } from "zustand";
 
-export type Store = {
+
+export interface Store {
   stateValue: number;
   increment: () => void;
   decrement: () => void;
   reset: () => void;
-};
+}
 
-export const defaultState = {
+
+export const useMyStore = create<Store>((set) => ({
   stateValue: 0,
-};
-
-export const createStoreMe = (
-  initState = defaultState, 
-) => {
-  return createStore<Store>()((set) => ({
-    ...initState,
-    increment: () => set((state) => ({ stateValue: state.stateValue + 1 })),
-    decrement: () => set((state) => ({ stateValue: state.stateValue - 1 })),
-    reset: () => set({ stateValue: 0 }), 
-  }));
-};
-
-export const myStore = createStoreMe();
+  increment: () => set((state) => ({ stateValue: state.stateValue + 1 })),
+  decrement: () => set((state) => ({ stateValue: state.stateValue - 1 })),
+  reset: () => set(() => ({ stateValue: 0 })),
+}));
